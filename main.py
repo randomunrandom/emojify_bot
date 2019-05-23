@@ -1,12 +1,13 @@
 #!/usr/bin/env python
 
 from logging import basicConfig, getLogger, INFO
-from typing import Dict
+from typing import Dict, AnyStr
+from os import environ
 
 from telegram import Bot
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 
-from variables import TOKEN
+TOKEN: AnyStr = environ.get("BOT_TOKEN", "")
 
 
 class EmojifyBot:
@@ -43,7 +44,10 @@ class EmojifyBot:
     def info_handler(self, update, context):
         self.logger.info(f'{update.message.chat.username} requested information about the bot')
         context.bot.send_message(chat_id=update.message.chat_id,
-                                 text="me")
+                                 parse_mode="Markdown",
+                                 text="A simple bot, written with [python-telegram-bot]("
+                                      "https://github.com/python-telegram-bot/python-telegram-bot)."
+                                      "Text is processed on a server on [Flask](https://github.com/pallets/flask)")
 
     def creators_handler(self, update, context):
         self.logger.info(f'{update.message.chat.username} requested information about creators')
